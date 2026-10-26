@@ -4,7 +4,7 @@
  * data). Because the generator and the reader come from the same reading of
  * the format, these tests check the reader is self-consistent and robust, not
  * that the reading of the format is right: that needs a real card. */
-import { test } from 'node:test';
+import { test, after } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import os from 'node:os';
@@ -129,9 +129,14 @@ function edfFile({ y, mo, d, h, mi, s, seconds, leakAt }) {
   return concat(hdr, body);
 }
 
+/* every card written here is removed once the tests are done */
+const made = [];
+after(() => Promise.all(made.map((dir) => fs.rm(dir, { recursive: true, force: true }))));
+
 /* write the card under os.tmpdir() and hand back the reader's file list */
 async function card(entries) {
   const root = await fs.mkdtemp(path.join(os.tmpdir(), 'sleepstyle-'));
+  made.push(root);
   for (const [rel, bytes] of Object.entries(entries)) {
     const full = path.join(root, rel);
     await fs.mkdir(path.dirname(full), { recursive: true });

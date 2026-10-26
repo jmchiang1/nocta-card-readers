@@ -3,7 +3,7 @@
  * format as OSCAR's resvent_loader reads it (no real patient data). A card
  * generated from the same reading of the format only checks that the reader is
  * consistent with that reading, not that it matches a real machine. */
-import { test } from 'node:test';
+import { test, after } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
@@ -38,8 +38,13 @@ const P_CHANNELS = ['Press', 'IPAP', 'EPAP', 'Leak', 'Vt', 'MV', 'RR', 'Ti', 'I:
 /* one chunk (4 s, 2 samples per channel) with given pressure / leak */
 const chunk = (press, leak) => [[press, press], [press, press], [press - 200, press - 200], [leak, leak + 10], [500, 510], [750, 760], [150, 160], [1200, 1200], [500, 500], [0, 0], [0, 0]];
 
+/* every card written here is removed once the tests are done */
+const made = [];
+after(() => made.forEach((dir) => fs.rmSync(dir, { recursive: true, force: true })));
+
 function writeCard(files) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'resvent-'));
+  made.push(dir);
   for (const [rel, data] of Object.entries(files)) {
     const p = path.join(dir, rel);
     fs.mkdirSync(path.dirname(p), { recursive: true });
