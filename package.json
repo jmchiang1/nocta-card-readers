@@ -1,0 +1,46 @@
+{
+  "name": "nocta-card-readers",
+  "version": "0.1.0",
+  "description": "Read CPAP machines' SD cards in the browser into plain therapy sessions.",
+  "license": "GPL-3.0-only",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.js",
+    "./philips-ds2": "./src/philips-ds2.js",
+    "./prs1": "./src/prs1.js",
+    "./edf": "./src/edf.js",
+    "./errors": "./src/errors.js",
+    "./prisma": "./src/prisma.js",
+    "./sleepstyle": "./src/sleepstyle.js",
+    "./resvent": "./src/resvent.js",
+    "./bmc": "./src/bmc.js"
+  },
+  "files": [
+    "src",
+    "LICENSE",
+    "README.md",
+    "SESSIONS.md"
+  ],
+  "scripts": {
+    "test": "node --test test/*.test.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jmchiang1/nocta-card-readers.git"
+  },
+  "keywords": [
+    "cpap",
+    "sleep-apnea",
+    "sd-card",
+    "oscar",
+    "resmed",
+    "philips",
+    "bmc",
+    "luna",
+    "lowenstein",
+    "prisma",
+    "fisher-paykel",
+    "sleepstyle",
+    "resvent"
+  ]
+}
